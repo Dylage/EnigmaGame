@@ -22,6 +22,10 @@
         android:layout_width="match_parent"
         android:layout_height="50pt"
         tools:layout_editor_absoluteX="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteY="281dp" />
 
     <Button
@@ -29,15 +33,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Valider"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="428dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.686" />
 
     <Button
         android:id="@+id/boutonParametre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Parametre"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
