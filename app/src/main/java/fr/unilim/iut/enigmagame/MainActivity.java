@@ -10,11 +10,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    Button bouton;
-    TextView question;
-    EditText saisie;
-    Button boutonParametre;
-    Parametre param;
+    private Button bouton;
+    private TextView question;
+    private EditText saisie;
+    private Button boutonParametre;
+    private Parametre param;
+    private EnigmeBDD db;
+    private Enigme enigmeActuelle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +28,21 @@ public class MainActivity extends AppCompatActivity {
         question = (TextView) findViewById(R.id.question);
         saisie = (EditText) findViewById(R.id.saisie);
 
+
+        initDb();
+
+
+        this.db.open();
+        // this.enigmeActuelle = db.getEnigmeWithQuestion("Quelle est la couleur du cheval blanc d'Henry IV ?");
+        this.enigmeActuelle = db.getEnigmeWithId(1);
+        this.db.close();
+
+        this.question.setText(this.enigmeActuelle.getEnigme());
+        this.saisie.setText("Saisissez votre réponse");
+
         bouton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                if ("Jonathan".equals(saisie.getText().toString())){
+                if (enigmeActuelle.getReponse().equals(saisie.getText().toString())){
                     question.setText("BRAVO !");
                 }
             }
@@ -40,6 +55,27 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+    }
+
+    /**
+     * Insère les énigmes dans la DB
+     */
+    private void initDb(){
+        this.db = new EnigmeBDD(this);
+        Enigme enigme = new Enigme("Quelle est la couleur du cheval blanc d'Henry IV ?", "blanc");
+        this.db.destroy();
+        this.db.init();
+
+        this.db.open();
+        this.db.insertEnigme(enigme);
+        this.db.close();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.db.destroy();
 
     }
 }

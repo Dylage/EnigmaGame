@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BaseSqlLite extends SQLiteOpenHelper {
-    private static final String TABLE_ENIGMES = "table_engimes";
+    private static final String TABLE_ENIGMES = "table_enigmes";
     private static final String COL_ID = "ID";
     private static final String COL_ENIGME = "ENIGME";
     private static final String COL_REPONSE = "REPONSE";
@@ -15,13 +15,27 @@ public class BaseSqlLite extends SQLiteOpenHelper {
 
     public BaseSqlLite(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_BDD);
-    }
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
+    }
+
+
+    public void init(SQLiteDatabase db) {
+        db.execSQL(CREATE_BDD);
+    }
+
+    public void destroy(SQLiteDatabase db){
+        db.execSQL("DROP TABLE " + TABLE_ENIGMES + ";");
+
+    }
+
+
 }

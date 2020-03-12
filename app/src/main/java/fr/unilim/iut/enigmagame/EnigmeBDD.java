@@ -8,12 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 public class EnigmeBDD {
     private static final int VERSION_BDD = 1;
     private static final String NOM_BDD = "enigmes.db";
-    private static final String TABLE_ENIGMES = "table_enigmes";
+    public static final String TABLE_ENIGMES = "table_enigmes";
     private static final String COL_ID = "ID";
     private static final int NUM_COL_ID = 0;
     private static final String COL_ENIGME = "ENIGME";
     private static final int NUM_COL_ENIGME = 1;
-    private static final String COL_SOLUTION = "SOLUTION";
+    private static final String COL_SOLUTION = "REPONSE";
     private static final int NUM_COL_SOLUTION = 2;
     private SQLiteDatabase bdd;
     private BaseSqlLite maBaseSQLite;
@@ -21,6 +21,18 @@ public class EnigmeBDD {
     public EnigmeBDD(Context context) {
 
         maBaseSQLite = new BaseSqlLite(context, NOM_BDD, null, VERSION_BDD);
+    }
+
+    public void init(){
+        this.open();
+        this.maBaseSQLite.init(this.bdd);
+        this.close();
+    }
+
+    public void destroy(){
+        this.open();
+        this.maBaseSQLite.destroy(this.bdd);
+        this.close();
     }
 
     public void open() {
@@ -37,7 +49,7 @@ public class EnigmeBDD {
         return bdd;
     }
 
-    public long insertLivre(Enigme enigme) {
+    public long insertEnigme(Enigme enigme) {
 
         ContentValues values = new ContentValues();
 
@@ -69,6 +81,10 @@ public class EnigmeBDD {
 
     public Enigme getEnigmeWithId(int id) {
 
+        /* Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION},
+                COL_ID + " LIKE \"" + id + "\"", null, null, null, null);
+
+         */
         Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION},
                 COL_ID + " LIKE \"" + id + "\"", null, null, null, null);
         return cursorToEnigme(c);
