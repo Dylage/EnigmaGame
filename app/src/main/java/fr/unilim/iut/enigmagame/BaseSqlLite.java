@@ -33,7 +33,7 @@ public class BaseSqlLite extends SQLiteOpenHelper {
     }
 
     public void destroy(SQLiteDatabase db){
-        db.execSQL("DROP TABLE " + TABLE_ENIGMES + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENIGMES + ";");
 
     }
 
