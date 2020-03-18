@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         this.db.close();
 
         this.question.setText(this.enigmeActuelle.getEnigme());
-        this.saisie.setText("Saisissez votre réponse");
+        this.saisie.setHint("Saisissez votre réponse");
 
         bouton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
