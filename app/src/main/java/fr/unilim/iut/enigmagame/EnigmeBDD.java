@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.List;
+
 public class EnigmeBDD {
     private static final int VERSION_BDD = 1;
     private static final String NOM_BDD = "enigmes.db";
@@ -57,6 +59,14 @@ public class EnigmeBDD {
         values.put(COL_SOLUTION, enigme.getReponse());
 
         return bdd.insert(TABLE_ENIGMES, null, values);
+    }
+
+    public void insertEnigme(List<Enigme> enigmes) {
+
+        for (Enigme enigme: enigmes) {
+            this.insertEnigme(enigme);
+        }
+
     }
 
     public int updateEnigme(int id, Enigme enigme) {

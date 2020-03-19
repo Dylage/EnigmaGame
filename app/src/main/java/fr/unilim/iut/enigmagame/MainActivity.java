@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     private Button bouton;
     private TextView question;
@@ -67,11 +69,16 @@ public class MainActivity extends AppCompatActivity {
         this.db.destroy();
         this.db.init();
 
+        ArrayList listEnigmes = new ArrayList();
+
         Enigme enigme = new Enigme("Quelle est la couleur du cheval blanc d'Henry IV ?", "blanc");
         Enigme enigme1 = new Enigme("Qu'est ce qui est jaune et qui attend ?", "Jonathan");
+
+        listEnigmes.add(enigme);
+        listEnigmes.add(enigme1);
+
         this.db.open();
-        this.db.insertEnigme(enigme);
-        this.db.insertEnigme(enigme1);
+        this.db.insertEnigme(listEnigmes);
         this.db.close();
     }
 
