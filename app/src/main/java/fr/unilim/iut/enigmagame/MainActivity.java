@@ -9,12 +9,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
-    Button bouton;
-    TextView question;
-    EditText saisie;
-    Button boutonParametre;
-    Parametre param;
+    private Button bouton;
+    private TextView question;
+    private EditText saisie;
+    private Button boutonParametre;
+    private Parametre param;
+    private EnigmeBDD db;
+    private Enigme enigmeActuelle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +30,22 @@ public class MainActivity extends AppCompatActivity {
         question = (TextView) findViewById(R.id.question);
         saisie = (EditText) findViewById(R.id.saisie);
 
+
+        initDb();
+
+
+        this.db.open();
+        // this.enigmeActuelle = db.getEnigmeWithQuestion("Quelle est la couleur du cheval blanc d'Henry IV ?");
+        //this.enigmeActuelle = db.getEnigmeWithId(1);
+        this.enigmeActuelle = db.getRandomEnigme();
+        this.db.close();
+
+        this.question.setText(this.enigmeActuelle.getEnigme());
+        this.saisie.setHint("Saisissez votre réponse");
+
         bouton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                if ("Jonathan".equals(saisie.getText().toString())){
+                if (enigmeActuelle.getReponse().equals(saisie.getText().toString())){
                     question.setText("BRAVO !");
                 }
             }
@@ -40,6 +58,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+    }
+
+    /**
+     * Insère les énigmes dans la DB
+     */
+    private void initDb(){
+        this.db = new EnigmeBDD(this);
+        this.db.destroy();
+        this.db.init();
+
+        ArrayList listEnigmes = new ArrayList();
+
+        Enigme enigme = new Enigme("Quelle est la couleur du cheval blanc d'Henry IV ?", "blanc");
+        Enigme enigme1 = new Enigme("Qu'est ce qui est jaune et qui attend ?", "Jonathan");
+
+        listEnigmes.add(enigme);
+        listEnigmes.add(enigme1);
+
+        this.db.open();
+        this.db.insertEnigme(listEnigmes);
+        this.db.close();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.db.destroy();
 
     }
 }
