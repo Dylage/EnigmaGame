@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BaseSqlLite extends SQLiteOpenHelper {
-    private static final String TABLE_ENIGMES = "table_engimes";
+    private static final String TABLE_ENIGMES = "table_enigmes";
     private static final String COL_ID = "ID";
     private static final String COL_ENIGME = "ENIGME";
     private static final String COL_REPONSE = "REPONSE";
