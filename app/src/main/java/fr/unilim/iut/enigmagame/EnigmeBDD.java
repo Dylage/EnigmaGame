@@ -80,13 +80,28 @@ public class EnigmeBDD {
     }
 
     public Enigme getEnigmeWithId(int id) {
-
-        /* Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION},
-                COL_ID + " LIKE \"" + id + "\"", null, null, null, null);
-
-         */
         Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION},
                 COL_ID + " LIKE \"" + id + "\"", null, null, null, null);
+        return cursorToEnigme(c);
+    }
+
+    /**
+     * Méthode pour obtenir une énigme aléatoirement
+     * @return
+     */
+    public Enigme getRandomEnigme(){
+        // On récupère le nombre d'énigmes dans la table
+        Cursor mCount= bdd.rawQuery("select count(*) from TABLE_ENIGMES", null);
+        mCount.moveToFirst();
+        int count = mCount.getInt(0);
+        mCount.close();
+
+        // On génère un aléatoire entre 1 et ce nombre (les auto increment commencent à 1)
+        int random = 1 + (int)(Math.random() * ((count - 1) + 1));
+
+        // On récupère l'énigme dont l'id est ce nombre aléatoire
+        Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION},
+                COL_ID + " LIKE \"" + random + "\"", null, null, null, null);
         return cursorToEnigme(c);
     }
 

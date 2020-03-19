@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
         this.db.open();
         // this.enigmeActuelle = db.getEnigmeWithQuestion("Quelle est la couleur du cheval blanc d'Henry IV ?");
-        this.enigmeActuelle = db.getEnigmeWithId(1);
+        //this.enigmeActuelle = db.getEnigmeWithId(1);
+        this.enigmeActuelle = db.getRandomEnigme();
         this.db.close();
 
         this.question.setText(this.enigmeActuelle.getEnigme());
@@ -63,12 +64,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initDb(){
         this.db = new EnigmeBDD(this);
-        Enigme enigme = new Enigme("Quelle est la couleur du cheval blanc d'Henry IV ?", "blanc");
         this.db.destroy();
         this.db.init();
 
+        Enigme enigme = new Enigme("Quelle est la couleur du cheval blanc d'Henry IV ?", "blanc");
+        Enigme enigme1 = new Enigme("Qu'est ce qui est jaune et qui attend ?", "Jonathan");
         this.db.open();
         this.db.insertEnigme(enigme);
+        this.db.insertEnigme(enigme1);
         this.db.close();
     }
 
