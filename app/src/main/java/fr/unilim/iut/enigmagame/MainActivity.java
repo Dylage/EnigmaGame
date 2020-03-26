@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         // this.enigmeActuelle = db.getEnigmeWithQuestion("Quelle est la couleur du cheval blanc d'Henry IV ?");
         //this.enigmeActuelle = db.getEnigmeWithId(1);
         this.enigmeActuelle = db.getRandomEnigme();
-        this.db.close();
 
         this.question.setText(this.enigmeActuelle.getEnigme());
         this.saisie.setHint("Saisissez votre réponse");
@@ -46,7 +45,11 @@ public class MainActivity extends AppCompatActivity {
         bouton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 if (enigmeActuelle.getReponse().equals(saisie.getText().toString())){
-                    question.setText("BRAVO !");
+                    question.setText("BRAVO !" + "\n" +
+                            "Essais " +  db.getNbEssaisEnigme(enigmeActuelle.getId()) + "...");
+                    db.close();
+                }else{
+                    db.nouvelEssai(enigmeActuelle.getId());
                 }
             }
         });

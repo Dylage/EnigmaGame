@@ -17,6 +17,8 @@ public class EnigmeBDD {
     private static final int NUM_COL_ENIGME = 1;
     private static final String COL_SOLUTION = "REPONSE";
     private static final int NUM_COL_SOLUTION = 2;
+    private static final String COL_SCORE = "NB_ESSAIS";
+    private static final int NUM_COL_SCORE = 3;
     private SQLiteDatabase bdd;
     private BaseSqlLite maBaseSQLite;
 
@@ -57,6 +59,7 @@ public class EnigmeBDD {
 
         values.put(COL_ENIGME, enigme.getEnigme());
         values.put(COL_SOLUTION, enigme.getReponse());
+        values.put(COL_SCORE, 0);
 
         return bdd.insert(TABLE_ENIGMES, null, values);
     }
@@ -77,6 +80,25 @@ public class EnigmeBDD {
         return bdd.update(TABLE_ENIGMES, values, COL_ID + " = " + id, null);
     }
 
+    public int nouvelEssai(int id) {
+
+        ContentValues values = new ContentValues();
+        values.put(COL_SCORE, this.getNbEssaisEnigme(id) + 1);
+
+        return bdd.update(TABLE_ENIGMES, values, COL_ID + " = " + id, null);
+    }
+
+    /**
+     * Méthode pour obtenir le nombre d'essais d'une énigme
+     * @param id : identifiant d'une énigme
+     * @return son nombre d'essais
+     */
+    public int getNbEssaisEnigme(int id){
+        Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION, COL_SCORE},
+                COL_ID + " LIKE \"" + id + "\"", null, null, null, null);
+        return cursorToEnigme(c).getScore();
+    }
+
     public int removeLivreWithID(int id) {
 
         return bdd.delete(TABLE_ENIGMES, COL_ID + " = " + id, null);
@@ -84,13 +106,13 @@ public class EnigmeBDD {
 
     public Enigme getEnigmeWithQuestion(String question) {
 
-        Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION},
+        Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION, COL_SCORE},
                 COL_SOLUTION + " LIKE \"" + question + "\"", null, null, null, null);
         return cursorToEnigme(c);
     }
 
     public Enigme getEnigmeWithId(int id) {
-        Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION},
+        Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION, COL_SCORE},
                 COL_ID + " LIKE \"" + id + "\"", null, null, null, null);
         return cursorToEnigme(c);
     }
@@ -110,7 +132,7 @@ public class EnigmeBDD {
         int random = 1 + (int)(Math.random() * ((count - 1) + 1));
 
         // On récupère l'énigme dont l'id est ce nombre aléatoire
-        Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION},
+        Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION, COL_SCORE},
                 COL_ID + " LIKE \"" + random + "\"", null, null, null, null);
         return cursorToEnigme(c);
     }
@@ -124,6 +146,7 @@ public class EnigmeBDD {
         enigme.setId(c.getInt(NUM_COL_ID));
         enigme.setEnigme(c.getString(NUM_COL_ENIGME));
         enigme.setReponse(c.getString(NUM_COL_SOLUTION));
+        enigme.setScore(c.getInt(NUM_COL_SCORE));
         //On ferme le cursor
         c.close();
         //On retourne le livre

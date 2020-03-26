@@ -9,9 +9,10 @@ public class BaseSqlLite extends SQLiteOpenHelper {
     private static final String COL_ID = "ID";
     private static final String COL_ENIGME = "ENIGME";
     private static final String COL_REPONSE = "REPONSE";
+    private static final String COL_SCORE = "NB_ESSAIS";
     private static final String CREATE_BDD = "CREATE TABLE " + TABLE_ENIGMES + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_ENIGME + " TEXT NOT NULL, "
-            + COL_REPONSE + " TEXT NOT NULL);";
+            + COL_REPONSE + " TEXT NOT NULL, " + COL_SCORE + " INTEGER NOT NULL " + ");";
 
     public BaseSqlLite(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

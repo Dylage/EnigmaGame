@@ -4,6 +4,7 @@ class Enigme {
     private int id;
     private String enigme;
     private String reponse;
+    private int score;
 
     public Enigme() {
     }
@@ -33,6 +34,10 @@ class Enigme {
         return reponse;
     }
 
+    public int getScore() {
+        return score;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -44,4 +49,9 @@ class Enigme {
     public void setReponse(String reponse) {
         this.reponse = reponse;
     }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
 }
