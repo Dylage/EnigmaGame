@@ -1,8 +1,18 @@
 package fr.unilim.iut.enigmagame;
 
+/**
+*  Une énigme est caractérisée par une question et une réponse
+*/
 class Enigme {
     private int id;
+    /**
+     * Question de l'énigme
+     */
     private String enigme;
+    /**
+     * Réponse qui y correspond
+     * TODO : remplacer par une liste pour les fautes de français ?
+     */
     private String reponse;
     private int score;
 
@@ -17,7 +27,6 @@ class Enigme {
     }
 
     public Enigme(String enigme, String reponse) {
-
         this.enigme = enigme;
         this.reponse = reponse;
     }

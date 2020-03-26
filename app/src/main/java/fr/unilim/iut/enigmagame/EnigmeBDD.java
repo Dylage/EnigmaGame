@@ -41,6 +41,11 @@ public class EnigmeBDD {
         return bdd;
     }
 
+    /**
+     * Méthode pour insérer une énigme dans la DB
+     * @param enigme
+     * @return
+     */
     public long insertEnigme(Enigme enigme) {
 
         ContentValues values = new ContentValues();
@@ -52,6 +57,10 @@ public class EnigmeBDD {
         return bdd.insert(TABLE_ENIGMES, null, values);
     }
 
+    /**
+     * Méthode pour insérer une liste d'énigme dans la DB
+     * @param enigmes
+     */
     public void insertEnigme(List<Enigme> enigmes) {
 
         for (Enigme enigme: enigmes) {
@@ -60,14 +69,26 @@ public class EnigmeBDD {
 
     }
 
+    /**
+     * Méthode pour modifier une énigme dans la DB
+     * @param id : id de l'énigme dans la DB
+     * @param enigme : on prend sa question, sa solution ET son score
+     * @return
+     */
     public int updateEnigme(int id, Enigme enigme) {
 
         ContentValues values = new ContentValues();
         values.put(COL_ENIGME, enigme.getEnigme());
-        values.put(COL_SOLUTION, enigme.getReponse());
+        values.put(COL_SOLUTION, enigme.getScore());
+        values.put(COL_SCORE, enigme.getReponse());
         return bdd.update(TABLE_ENIGMES, values, COL_ID + " = " + id, null);
     }
 
+    /**
+     * Incrémente de 1 le nombre d'essais sur l'énigme
+     * @param id : id de l'énigme dans la DB
+     * @return
+     */
     public int nouvelEssai(int id) {
 
         ContentValues values = new ContentValues();
@@ -87,11 +108,21 @@ public class EnigmeBDD {
         return cursorToEnigme(c).getScore();
     }
 
-    public int removeLivreWithID(int id) {
+    /**
+     * Méthode pour supprimer une énigme de la DB
+     * @param id
+     * @return
+     */
+    public int removeEnigmeWithID(int id) {
 
         return bdd.delete(TABLE_ENIGMES, COL_ID + " = " + id, null);
     }
 
+    /**
+     * Méthode pour obtenir une énigme selon sa question
+     * @param question : chaine de caractère représentant la question posée
+     * @return : l'énigme complète
+     */
     public Enigme getEnigmeWithQuestion(String question) {
 
         Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION, COL_SCORE},
@@ -99,6 +130,11 @@ public class EnigmeBDD {
         return cursorToEnigme(c);
     }
 
+    /**
+     * Méthode pour obtenir une énigme selon son id dans la DB
+     * @param id : identifiant de l'énigme
+     * @return : l'énigme complète
+     */
     public Enigme getEnigmeWithId(int id) {
         Cursor c = bdd.query(TABLE_ENIGMES, new String[]{COL_ID, COL_ENIGME, COL_SOLUTION, COL_SCORE},
                 COL_ID + " LIKE \"" + id + "\"", null, null, null, null);
@@ -125,6 +161,11 @@ public class EnigmeBDD {
         return cursorToEnigme(c);
     }
 
+    /**
+     * Méthode pour créer une énigme selon le curseur dans la DB (et les informations contenues)
+     * @param c : curseur sur une ligne de la DB
+     * @return : l'énigme complète
+     */
     private Enigme cursorToEnigme(Cursor c) {
         if (c.getCount() == 0)
             return null;

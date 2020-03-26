@@ -18,11 +18,21 @@ public class BaseSqlLite extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    /**
+     * À l'installation, on crée la DB
+     * @param db
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_BDD);
     }
 
+    /**
+     * À la mise à jour, on supprime l'ancienne DB puis on en recrée une
+     * @param db
+     * @param i
+     * @param i1
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENIGMES + ";");
