@@ -27,18 +27,6 @@ public class EnigmeBDD {
         maBaseSQLite = new BaseSqlLite(context, NOM_BDD, null, VERSION_BDD);
     }
 
-    public void init(){
-        this.open();
-        this.maBaseSQLite.init(this.bdd);
-        this.close();
-    }
-
-    public void destroy(){
-        this.open();
-        this.maBaseSQLite.destroy(this.bdd);
-        this.close();
-    }
-
     public void open() {
 
         bdd = maBaseSQLite.getWritableDatabase();

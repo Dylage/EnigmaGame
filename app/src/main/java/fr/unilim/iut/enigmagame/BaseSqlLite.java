@@ -16,27 +16,19 @@ public class BaseSqlLite extends SQLiteOpenHelper {
 
     public BaseSqlLite(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
-
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
-    }
-
-
-    public void init(SQLiteDatabase db) {
         db.execSQL(CREATE_BDD);
     }
 
-    public void destroy(SQLiteDatabase db){
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ENIGMES + ";");
-
+        onCreate(db);
     }
+
 
 
 }

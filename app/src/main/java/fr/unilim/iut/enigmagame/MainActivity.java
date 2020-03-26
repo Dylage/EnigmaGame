@@ -44,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
 
         bouton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+                db.open();
                 if (enigmeActuelle.getReponse().equals(saisie.getText().toString())){
                     question.setText("BRAVO !" + "\n" +
                             "Essais " +  db.getNbEssaisEnigme(enigmeActuelle.getId()) + "...");
                     db.close();
                 }else{
                     db.nouvelEssai(enigmeActuelle.getId());
+                    db.close();
                 }
             }
         });
@@ -69,8 +71,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initDb(){
         this.db = new EnigmeBDD(this);
-        this.db.destroy();
-        this.db.init();
+
 
         ArrayList listEnigmes = new ArrayList();
 
@@ -85,10 +86,4 @@ public class MainActivity extends AppCompatActivity {
         this.db.close();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        this.db.destroy();
-
-    }
 }
