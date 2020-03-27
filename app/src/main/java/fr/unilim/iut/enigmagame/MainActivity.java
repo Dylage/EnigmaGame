@@ -38,11 +38,21 @@ public class MainActivity extends AppCompatActivity {
 
         initDb();
 
+        int oldId = getIntent().getIntExtra("oldId", -1);
+
 
         this.db.open();
-        // this.enigmeActuelle = db.getEnigmeWithQuestion("Quelle est la couleur du cheval blanc d'Henry IV ?");
-        //this.enigmeActuelle = db.getEnigmeWithId(1);
-        this.enigmeActuelle = db.getRandomEnigme();
+        // Pour changer d'énigme
+        if (-1 != oldId){
+            Enigme buffer = db.getRandomEnigme();
+
+            while(buffer.getId() == oldId){
+                buffer = db.getRandomEnigme();
+            }
+            this.enigmeActuelle = buffer;
+        }else{
+            this.enigmeActuelle = db.getRandomEnigme();
+        }
 
         this.question.setText(this.enigmeActuelle.getEnigme());
         this.msg.setText("");
@@ -76,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         renew.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.putExtra("oldId", enigmeActuelle.getId());
                 startActivity(intent);
             }
         });
@@ -91,11 +102,12 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList listEnigmes = new ArrayList();
 
-        Enigme enigme = new Enigme("Quelle est la couleur du cheval blanc d'Henry IV ?", "blanc");
-        Enigme enigme1 = new Enigme("Qu'est ce qui est jaune et qui attend ?", "Jonathan");
-
-        listEnigmes.add(enigme);
-        listEnigmes.add(enigme1);
+        listEnigmes.add(new Enigme("Quelle est la couleur du cheval blanc d'Henry IV ?", "blanc"));
+        listEnigmes.add(new Enigme("Qu'est ce qui est jaune et qui attend ?", "Jonathan"));
+        listEnigmes.add(new Enigme("Qu'est ce que fait une fraise sur un cheval ?", "tagada"));
+        listEnigmes.add(new Enigme("Avec quoi est ce qu'on ramasse les papayes ?", "foufourche"));
+        listEnigmes.add(new Enigme("Comment appelle t-on un oiseau sur twitter ?", "#oiseau"));
+        listEnigmes.add(new Enigme("Quel être, pourvu d'une seule voix, a d'abord quatre jambes le matin, puis deux jambes le midi, et trois jambes le soir ?", "humain"));
 
         this.db.open();
         this.db.insertEnigme(listEnigmes);
