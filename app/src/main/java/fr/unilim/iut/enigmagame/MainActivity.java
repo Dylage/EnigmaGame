@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private Button bouton;
     private TextView question;
+    private TextView msg;
     private EditText saisie;
     private Button boutonParametre;
     private Parametre param;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         bouton = (Button) findViewById(R.id.bouton);
         question = (TextView) findViewById(R.id.question);
+        msg = (TextView) findViewById(R.id.msg);
         saisie = (EditText) findViewById(R.id.saisie);
 
 
@@ -40,16 +42,18 @@ public class MainActivity extends AppCompatActivity {
         this.enigmeActuelle = db.getRandomEnigme();
 
         this.question.setText(this.enigmeActuelle.getEnigme());
+        this.msg.setText("");
         this.saisie.setHint("Saisissez votre réponse");
 
         bouton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 db.open();
                 if (enigmeActuelle.getReponse().equals(saisie.getText().toString())){
-                    question.setText("BRAVO !" + "\n" +
+                    msg.setText("BRAVO !" + "\n" +
                             "Essais " +  db.getNbEssaisEnigme(enigmeActuelle.getId()) + "...");
                     db.close();
                 }else{
+                    msg.setText("C'est non...");
                     db.nouvelEssai(enigmeActuelle.getId());
                     db.close();
                 }
