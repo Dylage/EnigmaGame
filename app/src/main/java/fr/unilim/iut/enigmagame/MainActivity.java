@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private Button bouton;
+    private Button renew;
     private TextView question;
     private TextView msg;
     private EditText saisie;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         question = (TextView) findViewById(R.id.question);
         msg = (TextView) findViewById(R.id.msg);
         saisie = (EditText) findViewById(R.id.saisie);
+        boutonParametre = (Button) findViewById(R.id.boutonParametre);
+        renew = (Button) findViewById(R.id.boutonRenew);
 
 
         initDb();
@@ -60,10 +63,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        boutonParametre = (Button) findViewById(R.id.boutonParametre);
         boutonParametre.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, Parametre.class);
+                startActivity(intent);
+            }
+        });
+
+        /**
+         * Au clique, on revient ici et aléatoirement, on peut tomber sur une nouvelle énigme
+         */
+        renew.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
